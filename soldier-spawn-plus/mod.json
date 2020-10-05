@@ -1,0 +1,10 @@
+{
+  "Name": "SoldierSpawnModPlus",
+  "Authors": ["FoolHen", "Platy", "breaknix"],
+  "Description": "Spawns the player at a set postion with a set kit by typing !spawn in the chat bar.",
+  "Version": "1.0.0",
+  "HasVeniceEXT": true,
+  "Dependencies": {
+    "veniceext": "^1.0.0"
+  }
+}
