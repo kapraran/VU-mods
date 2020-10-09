@@ -1,7 +1,7 @@
 {
   "Name": "FortniteHitEffects",
   "Authors": ["breaknix"],
-  "Description": "Adds fortnite bloom and hit effects for no real reason :)",
+  "Description": "Adds fortnite hit effects for no real reason :)",
   "Version": "1.0.0",
   "HasVeniceEXT": true,
   "HasWebUI": true,
