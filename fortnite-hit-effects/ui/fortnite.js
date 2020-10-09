@@ -1,5 +1,5 @@
 const MAX_MULT = 130;
-const CANVAS_SIZE = 250;
+const CANVAS_SIZE = 300;
 const BASE_MS = 700;
 const RAND_MS = 180;
 const FPS = 60;
@@ -22,10 +22,6 @@ function playSound(file) {
 
 function playHeadshot() {
   playSound('470586__silverillusionist__headshot-2.ogg')
-}
-
-function getTanFromDegrees(degrees) {
-  return Math.tan((degrees * Math.PI) / 180);
 }
 
 class HitEffect {
@@ -80,11 +76,9 @@ function updateCanvas() {
   if (hits.length < 1) return;
 
   // draw each hit
-  for (let hit of hits) {
-    hit.draw();
-  }
+  hits.forEach(hit => hit.draw())
 
-  // update hits
+  // clear hits
   hits = hits.filter((hit) => Date.now() < hit.endMs);
 }
 
