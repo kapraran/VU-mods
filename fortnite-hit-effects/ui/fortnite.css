@@ -1,0 +1,24 @@
+@font-face {
+  font-family: "Knewave-Regular";
+  src: url("./Knewave-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Knewave-Regular', 'sans-serif';
+}
+
+#hitpoints {
+  position: fixed;
+  left: 50%;
+  bottom: 50%;
+}
+
+audio {
+  opacity: 0;
+  height: 1px;
+  width: 1px;
+}
