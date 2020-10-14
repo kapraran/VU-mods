@@ -1,0 +1,10 @@
+{
+  "Name": "RemoveFlagsVehicles",
+  "Authors": ["breaknix"],
+  "Description": "An example mod on how to remove flags & vehicles",
+  "Version": "1.0.0",
+  "HasVeniceEXT": true,
+  "Dependencies": {
+    "veniceext": "^1.0.0"
+  }
+}
