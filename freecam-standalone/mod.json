@@ -1,0 +1,11 @@
+{
+  "Name": "FreecamStandalone",
+  "Authors": ["FoolHen", "Powback", "breaknix"],
+  "Description": "MapEditor's freecam mode as a standalone mod",
+  "Version": "1.0.0",
+  "HasVeniceEXT": true,
+  "HasWebUI": false,
+  "Dependencies": {
+    "veniceext": "^1.0.0"
+  }
+}
