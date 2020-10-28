@@ -24,12 +24,12 @@ end
 function onParachuteSoundEvent(entity, entityEvent)
   if entityEvent.eventId == evHash.FreefallBegin then
     if isConsideredFreefall() then
-      Events:Dispatch('Player:FreefallBegin')
+      Events:Dispatch('LocalPlayer:FreefallBegin')
     end
   elseif entityEvent.eventId == evHash.ParachuteBegin then
-    Events:Dispatch('Player:ParachuteBegin')
+    Events:Dispatch('LocalPlayer:ParachuteBegin')
   elseif entityEvent.eventId == evHash.ParachuteEnd then
-    Events:Dispatch('Player:ParachuteEnd')
+    Events:Dispatch('LocalPlayer:ParachuteEnd')
   end
 end
 
