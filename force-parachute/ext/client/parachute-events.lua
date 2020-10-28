@@ -1,5 +1,12 @@
 local config = require('__shared/config')
 
+-- get event hashed IDs
+local evHash = {
+  FreefallBegin = MathUtils:FNVHash('FreefallBegin'),
+  ParachuteBegin = MathUtils:FNVHash('ParachuteBegin'),
+  ParachuteEnd = MathUtils:FNVHash('ParachuteEnd')
+}
+
 function isConsideredFreefall()
   local player = PlayerManager:GetLocalPlayer()
 
@@ -15,14 +22,14 @@ function isConsideredFreefall()
 end
 
 function onParachuteSoundEvent(entity, entityEvent)
-  if entityEvent.eventId == -1127517359 then
+  if entityEvent.eventId == evHash.FreefallBegin then
     if isConsideredFreefall() then
-      Events:Dispatch('Player:FreefallStarted')
+      Events:Dispatch('Player:FreefallBegin')
     end
-  elseif entityEvent.eventId == -321661585 then
-    Events:Dispatch('Player:ParachuteOpened')
-  elseif entityEvent.eventId == -1396450457 then
-    Events:Dispatch('Player:ParachuteClosed')
+  elseif entityEvent.eventId == evHash.ParachuteBegin then
+    Events:Dispatch('Player:ParachuteBegin')
+  elseif entityEvent.eventId == evHash.ParachuteEnd then
+    Events:Dispatch('Player:ParachuteEnd')
   end
 end
 

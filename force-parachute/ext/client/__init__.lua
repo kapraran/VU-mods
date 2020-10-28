@@ -12,9 +12,9 @@ function stopChecking()
   isChecking = false
 end
 
-Events:Subscribe('Player:FreefallStarted', startChecking)
-Events:Subscribe('Player:ParachuteOpened', stopChecking)
-Events:Subscribe('Player:ParachuteClosed', stopChecking)
+Events:Subscribe('Player:FreefallBegin', startChecking)
+Events:Subscribe('Player:ParachuteBegin', stopChecking)
+Events:Subscribe('Player:ParachuteEnd', stopChecking)
 
 Events:Subscribe('Engine:Update', function(deltaTime, simulationDeltaTime)
   sinceLastCheck = sinceLastCheck + deltaTime
