@@ -1,0 +1,11 @@
+{
+  "Name": "ForceParachute",
+  "Authors": ["breaknix"],
+  "Description": "Forces the parachute to open at a specified height",
+  "Version": "1.0.0",
+  "HasVeniceEXT": true,
+  "HasWebUI": false,
+  "Dependencies": {
+    "veniceext": "^1.0.0"
+  }
+}
