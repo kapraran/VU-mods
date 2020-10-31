@@ -1,27 +1,74 @@
-const MAX_MULT = 130;
-const CANVAS_SIZE = 300;
-const BASE_MS = 700;
-const RAND_MS = 180;
-const FPS = 60;
+const w = window.innerWidth;
+const h = window.innerHeight;
 
+// config options
+const config = {
+  fps: 60,
+  canvasSize: Math.floor(Math.min(w / 2, h / 2)),
+  maxMult: 120,
+  baseMs: 800,
+  randMs: 300,
+  minFontSize: 4,
+  maxFontSize: 5.4,
+  minDamageThreshold: 16,
+  maxDamageThreshold: 42,
+  fadeOutMs: 200,
+};
+
+// init canvas
 const canvas = document.getElementById("hitpoints");
-canvas.width = CANVAS_SIZE
-canvas.height = CANVAS_SIZE
+canvas.width = config.canvasSize;
+canvas.height = config.canvasSize;
 const ctx = canvas.getContext("2d");
 
+// play a sound using webui
 function playSound(file) {
-  const audio = document.createElement('audio')
-  audio.src = file
-  audio.autoplay = true
-  audio.controls = false
+  const audio = document.createElement("audio");
+  audio.src = file;
+  audio.autoplay = true;
+  audio.controls = false;
 
-  audio.addEventListener('complete', () => audio.remove())
+  audio.addEventListener("complete", () => audio.remove());
 
-  document.body.appendChild(audio)
+  document.body.appendChild(audio);
 }
 
 function playHeadshot() {
-  playSound('470586__silverillusionist__headshot-2.ogg')
+  playSound("470586__silverillusionist__headshot-2.ogg");
+}
+
+// get a dynamic font size based on damage
+function getFontSize(damage, isHeadshot) {
+  damage = Math.min(
+    config.maxDamageThreshold,
+    Math.max(config.minDamageThreshold, damage)
+  );
+  const prc =
+    1 -
+    (config.maxDamageThreshold - damage) /
+      (config.maxDamageThreshold - config.minDamageThreshold);
+  const fontSize =
+    config.minFontSize + prc * (config.maxFontSize - config.minFontSize);
+
+  return `${fontSize * (isHeadshot ? 1.25 : 1)}vh`;
+}
+
+function drawStroked(damage, x, y, isHeadshot, timeLeft) {
+  // calculate opacity
+  const alpha = Math.min(timeLeft / config.fadeOutMs, 1.0);
+
+  ctx.font = `${getFontSize(damage, isHeadshot)} Knewave-Regular`;
+
+  // draw stroke
+  ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+  ctx.lineWidth = isHeadshot ? 5 : 3;
+  ctx.strokeText(damage, x, y);
+
+  // draw text
+  ctx.fillStyle = isHeadshot
+    ? `rgba(240, 255, 0, ${alpha})`
+    : `rgba(255, 255, 255, ${alpha})`;
+  ctx.fillText(damage, x, y);
 }
 
 class HitEffect {
@@ -34,36 +81,35 @@ class HitEffect {
   }
 
   randomSlopeVector() {
-    const degrees = 15 + Math.floor(Math.random() * 60);
+    const degrees = 10 + Math.floor(Math.random() * 70);
     const rads = (degrees * Math.PI) / 180;
     return [Math.cos(rads), Math.sin(rads)];
   }
 
   randomEndMs() {
-    return this.startMs + BASE_MS + Math.floor(Math.random() * RAND_MS);
+    const randomMs =
+      Math.floor(Math.random() * config.randMs) * (this.isHeadshot ? 1.4 : 1);
+    return this.startMs + config.baseMs + randomMs;
   }
 
   getCoordinates() {
     const prc = (Date.now() - this.startMs) / (this.endMs - this.startMs);
-    const mult = 1 + prc * MAX_MULT;
+    const mult = 1 + prc * config.maxMult;
     return this.slopeVector.map(
-      (n, i) => i * CANVAS_SIZE + (1 + i * -2) * (n * mult)
+      (n, i) => i * config.canvasSize + (1 + i * -2) * (n * mult)
     );
   }
 
   draw() {
     const [x, y] = this.getCoordinates();
-    drawStroked(this.damage, x, y - 100, this.isHeadshot);
+    drawStroked(
+      this.damage,
+      x,
+      y - 100,
+      this.isHeadshot,
+      this.endMs - Date.now()
+    );
   }
-}
-
-function drawStroked(text, x, y, isHeadshot) {
-  ctx.font = `${isHeadshot ? "48px" : "32px"} Knewave-Regular`;
-  ctx.strokeStyle = "#000";
-  ctx.lineWidth = isHeadshot ? 4 : 3;
-  ctx.strokeText(text, x, y);
-  ctx.fillStyle = isHeadshot ? "yellow" : "#fff";
-  ctx.fillText(text, x, y);
 }
 
 let hits = [];
@@ -75,17 +121,17 @@ function updateCanvas() {
   // check if hits are empty
   if (hits.length < 1) return;
 
-  // draw each hit
-  hits.forEach(hit => hit.draw())
+  // clear expired hits
+  hits = hits.filter((hit) => Date.now() <= hit.endMs);
 
-  // clear hits
-  hits = hits.filter((hit) => Date.now() < hit.endMs);
+  // draw each hit
+  hits.forEach((hit) => hit.draw());
 }
 
 function addHit(damage, isHeadshot) {
-  if (isHeadshot) playHeadshot()
+  if (isHeadshot) playHeadshot();
   hits.push(new HitEffect(damage, isHeadshot));
 }
 
 // sweet 60fps animations
-setInterval(updateCanvas, 1000/FPS);
+setInterval(updateCanvas, 1000 / config.fps);
