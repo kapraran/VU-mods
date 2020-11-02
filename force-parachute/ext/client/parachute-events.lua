@@ -7,6 +7,8 @@ local evHash = {
   ParachuteEnd = MathUtils:FNVHash('ParachuteEnd')
 }
 
+local checkForFreefallBegin = false
+
 function isConsideredFreefall()
   local player = PlayerManager:GetLocalPlayer()
 
@@ -23,15 +25,25 @@ end
 
 function onParachuteSoundEvent(entity, entityEvent)
   if entityEvent.eventId == evHash.FreefallBegin then
-    if isConsideredFreefall() then
-      Events:Dispatch('LocalPlayer:FreefallBegin')
-    end
+    checkForFreefallBegin = true
   elseif entityEvent.eventId == evHash.ParachuteBegin then
     Events:Dispatch('LocalPlayer:ParachuteBegin')
   elseif entityEvent.eventId == evHash.ParachuteEnd then
     Events:Dispatch('LocalPlayer:ParachuteEnd')
   end
 end
+
+Events:Subscribe('UpdateManager:Update', function(deltaTime, updatePass)
+  if not checkForFreefallBegin or updatePass ~= UpdatePass.UpdatePass_PreSim then
+    return
+  end
+
+  checkForFreefallBegin = false
+
+  if isConsideredFreefall() then
+    Events:Dispatch('LocalPlayer:FreefallBegin')
+  end
+end)
 
 Events:Subscribe('Player:Respawn', function (player)
   local it = EntityManager:GetIterator('SoundEntity')

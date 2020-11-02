@@ -16,7 +16,11 @@ Events:Subscribe('LocalPlayer:FreefallBegin', startChecking)
 Events:Subscribe('LocalPlayer:ParachuteBegin', stopChecking)
 Events:Subscribe('LocalPlayer:ParachuteEnd', stopChecking)
 
-Events:Subscribe('Engine:Update', function(deltaTime, simulationDeltaTime)
+Events:Subscribe('UpdateManager:Update', function(deltaTime, updatePass)
+  if updatePass ~= UpdatePass.UpdatePass_PreSim then
+    return
+  end
+
   sinceLastCheck = sinceLastCheck + deltaTime
 
   -- skip if not enough time has passed
