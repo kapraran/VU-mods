@@ -8,8 +8,8 @@ const config = {
   maxMult: 120,
   baseMs: 800,
   randMs: 300,
-  minFontSize: 4,
-  maxFontSize: 5.4,
+  minFontSize: 3.8,
+  maxFontSize: 5,
   minDamageThreshold: 16,
   maxDamageThreshold: 42,
   fadeOutMs: 200,
@@ -50,7 +50,7 @@ function getFontSize(damage, isHeadshot) {
   const fontSize =
     config.minFontSize + prc * (config.maxFontSize - config.minFontSize);
 
-  return `${fontSize * (isHeadshot ? 1.25 : 1)}vh`;
+  return `${fontSize * (isHeadshot ? 1.2 : 1)}vh`;
 }
 
 function drawStroked(damage, x, y, isHeadshot, timeLeft) {
