@@ -1,0 +1,14 @@
+{
+  "Name": "BalancedReinforcements",
+  "Authors": ["breaknix"],
+  "Description": "Manage the number of reinforcements in Rush",
+  "Version": "1.0.0",
+  "HasVeniceEXT": true,
+  "HasWebUI": false,
+  "Tags": [
+    "balanced-reinforcements"
+  ],
+  "Dependencies": {
+    "veniceext": "^1.0.0"
+  }
+}
