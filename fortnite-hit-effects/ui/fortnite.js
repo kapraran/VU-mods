@@ -94,7 +94,7 @@ class HitEffect {
 
   getCoordinates() {
     const prc = (Date.now() - this.startMs) / (this.endMs - this.startMs);
-    const mult = 1 + prc * config.maxMult;
+    const mult = 1 + d3.easeExpOut(prc) * config.maxMult;
     return this.slopeVector.map(
       (n, i) => i * config.canvasSize + (1 + i * -2) * (n * mult)
     );
@@ -129,6 +129,7 @@ function updateCanvas() {
 }
 
 function addHit(damage, isHeadshot) {
+  if (damage <= 1) return;
   if (isHeadshot) playHeadshot();
   hits.push(new HitEffect(damage, isHeadshot));
 }
