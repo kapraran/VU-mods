@@ -7,7 +7,7 @@ It requires [MapLoader](https://github.com/BF3RM/MapLoader) mod to function.
 
 1. Use the same map/mode as you were when you created the map
 2. Copy the `mod.db` from MapEditor folder to the root of this mod (next to `mod.json`)
-3. (Optional) Update to `ext/config.lua` with your desired values
+3. (Optional) Update `ext/server/config.lua` with your desired values
 
 When you join the server, your map should be there 👌
 
