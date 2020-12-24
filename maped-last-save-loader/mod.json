@@ -1,5 +1,5 @@
 {
-  "Name": "MapedSaveLoader",
+  "Name": "MapedLastSaveLoader",
   "Authors": ["breaknix"],
   "Description": "Loads the last saved map from MapEditor",
   "Version": "1.0.0",
