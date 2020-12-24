@@ -1,0 +1,12 @@
+{
+  "Name": "MapedSaveLoader",
+  "Authors": ["breaknix"],
+  "Description": "Loads the last saved map from MapEditor",
+  "Version": "1.0.0",
+  "HasVeniceEXT": true,
+  "HasWebUI": false,
+  "Dependencies": {
+    "veniceext": "^1.0.0",
+    "MapLoader": "^1.0.0"
+  }
+}
