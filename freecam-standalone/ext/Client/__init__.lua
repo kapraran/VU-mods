@@ -32,6 +32,14 @@ function movePlayer()
   end
 end
 
+Events:Subscribe('Level:Destroy', function(p_Delta)
+  FreeCam:OnLevelDestroy()
+end)
+
+Events:Subscribe('Extension:Unloading', function(p_Delta)
+  FreeCam:OnLevelDestroy()
+end)
+
 Events:Subscribe('Client:UpdateInput', function(p_Delta)
   FreeCam:OnUpdateInput(p_Delta)
 end)

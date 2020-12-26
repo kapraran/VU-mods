@@ -36,6 +36,7 @@ function FreeCam:RegisterVars()
 end
 function FreeCam:OnLevelDestroy()
   self:RegisterVars()
+  self:Destroy()
 end
 
 function FreeCam:Create()
@@ -331,6 +332,14 @@ function FreeCam:UpdateFreeCamera(p_Delta)
 
   -- This fixes the tilted spectator camera.
   --s_Transform.left = Vec3(s_Transform.left.x, 0.0, s_Transform.left.z)
+end
+
+function FreeCam:Destroy()
+  if self.m_Camera == nil then
+    return
+  end
+
+  self.m_Camera:Destroy()
 end
 
 return FreeCam()
