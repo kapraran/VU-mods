@@ -9,3 +9,5 @@ Work-In-Progress, current changes are tested in **Conquest**. If you have any su
 * Reduced opacity and size of distant flagtags
 * Reduced opacity of distant nametags and edited their appearance
 * Disabled snapping of all 3d tags/icons around the screen while looking away from them
+
+![](screenshot.jpg)
