@@ -1,0 +1,11 @@
+{
+  "Name": "MinimalVanillaHUD",
+  "Authors": ["breaknix"],
+  "Description": "A simple mod that removes/edits some vanilla ui components for a more uncluttered experience.",
+  "Version": "1.0.0",
+  "HasVeniceEXT": true,
+  "HasWebUI": false,
+  "Dependencies": {
+    "veniceext": "^1.0.0"
+  }
+}
