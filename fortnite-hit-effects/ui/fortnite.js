@@ -113,9 +113,16 @@ export function updateCanvas(canvas, ctx) {
 
 function addHit(damage, isHeadshot) {
   if (damage <= 1) return;
-  if (isHeadshot) playHeadshot();
+  if (isHeadshot && config.soundEnabled) playHeadshot();
   hits.push(new HitEffect(damage, isHeadshot));
 }
 
 // expose addHit to global object
 window.addHit = addHit;
+
+function enableSound(enabled) {
+  config.soundEnabled = enabled;
+}
+
+// expose enableSound to global object
+window.enableSound = enableSound;

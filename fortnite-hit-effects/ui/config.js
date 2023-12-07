@@ -11,4 +11,5 @@ export default {
   minDamageThreshold: 16,
   maxDamageThreshold: 42,
   fadeOutMs: 200,
+  soundEnabled: false
 };
