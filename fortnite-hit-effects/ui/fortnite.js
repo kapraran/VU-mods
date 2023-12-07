@@ -1,25 +1,5 @@
-const w = window.innerWidth;
-const h = window.innerHeight;
-
-// config options
-const config = {
-  fps: 60,
-  canvasSize: Math.floor(Math.min(w / 2, h / 2)),
-  maxMult: 120,
-  baseMs: 800,
-  randMs: 300,
-  minFontSize: 3.8,
-  maxFontSize: 5,
-  minDamageThreshold: 16,
-  maxDamageThreshold: 42,
-  fadeOutMs: 200,
-};
-
-// init canvas
-const canvas = document.getElementById("hitpoints");
-canvas.width = config.canvasSize;
-canvas.height = config.canvasSize;
-const ctx = canvas.getContext("2d");
+import { easeExpOut } from "d3";
+import config from "./config.js";
 
 // play a sound using webui
 function playSound(file) {
@@ -27,7 +7,6 @@ function playSound(file) {
   audio.src = file;
   audio.autoplay = true;
   audio.controls = false;
-
   audio.addEventListener("complete", () => audio.remove());
 
   document.body.appendChild(audio);
@@ -50,10 +29,12 @@ function getFontSize(damage, isHeadshot) {
   const fontSize =
     config.minFontSize + prc * (config.maxFontSize - config.minFontSize);
 
-  return `${fontSize * (isHeadshot ? 1.2 : 1)}vh`;
+  const px = (window.innerHeight * fontSize * (isHeadshot ? 1.2 : 1)) / 100;
+
+  return `${px}px`;
 }
 
-function drawStroked(damage, x, y, isHeadshot, timeLeft) {
+function drawStroked(ctx, damage, x, y, isHeadshot, timeLeft) {
   // calculate opacity
   const alpha = Math.min(timeLeft / config.fadeOutMs, 1.0);
 
@@ -94,15 +75,17 @@ class HitEffect {
 
   getCoordinates() {
     const prc = (Date.now() - this.startMs) / (this.endMs - this.startMs);
-    const mult = 1 + d3.easeExpOut(prc) * config.maxMult;
+    const mult = 1 + easeExpOut(prc) * config.maxMult;
     return this.slopeVector.map(
       (n, i) => i * config.canvasSize + (1 + i * -2) * (n * mult)
     );
   }
 
-  draw() {
+  draw(ctx) {
     const [x, y] = this.getCoordinates();
+
     drawStroked(
+      ctx,
       this.damage,
       x,
       y - 100,
@@ -114,7 +97,7 @@ class HitEffect {
 
 let hits = [];
 
-function updateCanvas() {
+export function updateCanvas(canvas, ctx) {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -125,7 +108,7 @@ function updateCanvas() {
   hits = hits.filter((hit) => Date.now() <= hit.endMs);
 
   // draw each hit
-  hits.forEach((hit) => hit.draw());
+  hits.forEach((hit) => hit.draw(ctx));
 }
 
 function addHit(damage, isHeadshot) {
@@ -134,5 +117,5 @@ function addHit(damage, isHeadshot) {
   hits.push(new HitEffect(damage, isHeadshot));
 }
 
-// sweet 60fps animations
-setInterval(updateCanvas, 1000 / config.fps);
+// expose addHit to global object
+window.addHit = addHit;
