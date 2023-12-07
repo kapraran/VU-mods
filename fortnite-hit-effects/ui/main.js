@@ -13,9 +13,6 @@ function resizeCanvas(canvas) {
   canvas.height = newCanvasSize;
 }
 
-// Listen for window resize events
-window.addEventListener("resize", resizeCanvas);
-
 function main() {
   const canvas = document.createElement("canvas");
   canvas.id = "hitpoints";
