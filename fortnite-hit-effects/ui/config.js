@@ -1,8 +1,6 @@
 export default {
   fps: 60,
-  canvasSize: Math.floor(
-    Math.max(window.innerWidth / 2, window.innerHeight / 2)
-  ),
+  canvasSize: 0,
   maxMult: 120,
   baseMs: 800,
   randMs: 300,
@@ -11,5 +9,5 @@ export default {
   minDamageThreshold: 16,
   maxDamageThreshold: 42,
   fadeOutMs: 200,
-  soundEnabled: false
+  soundEnabled: false,
 };

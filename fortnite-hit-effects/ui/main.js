@@ -3,22 +3,20 @@ import "./fortnite.css";
 import { updateCanvas } from "./fortnite.js";
 
 function resizeCanvas(canvas) {
-  const newCanvasSize = Math.floor(
-    Math.max(window.innerWidth / 2, window.innerHeight / 2)
-  );
+  config.canvasSize = Math.max(window.innerWidth, window.innerHeight);
 
-  config.canvasSize = newCanvasSize;
-
-  canvas.width = newCanvasSize;
-  canvas.height = newCanvasSize;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
 }
 
 function main() {
   const canvas = document.createElement("canvas");
   canvas.id = "hitpoints";
-  canvas.width = config.canvasSize;
-  canvas.height = config.canvasSize;
   const ctx = canvas.getContext("2d");
+
+  resizeCanvas(canvas);
 
   document.body.appendChild(canvas);
 
@@ -27,4 +25,4 @@ function main() {
   setInterval(() => updateCanvas(canvas, ctx, config), 1000 / config.fps);
 }
 
-main();
+window.addEventListener("load", main);

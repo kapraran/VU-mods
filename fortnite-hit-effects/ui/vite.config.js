@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
-import vext from "vite-plugin-vext";
+import vext from "@vextjs/vite-plugin";
 
 export default defineConfig({
-  plugins: [vext.default()],
+  plugins: [vext()],
 });

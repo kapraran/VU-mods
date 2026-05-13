@@ -1,33 +1,27 @@
 import { easeExpOut } from "d3";
 import config from "./config.js";
 
-// play a sound using webui
 function playSound(file) {
-  const audio = document.createElement("audio");
-  audio.src = file;
-  audio.autoplay = true;
-  audio.controls = false;
-  audio.addEventListener("complete", () => audio.remove());
+  const video = document.createElement("video");
+  video.src = file;
+  video.autoplay = true;
+  video.controls = false;
+  video.addEventListener("ended", () => video.remove());
 
-  document.body.appendChild(audio);
+  document.body.appendChild(video);
 }
 
 function playHeadshot() {
-  playSound("470586__silverillusionist__headshot-2.ogg");
+  playSound("/470586__silverillusionist__headshot-2.webm");
 }
 
 // get a dynamic font size based on damage
 function getFontSize(damage, isHeadshot) {
-  damage = Math.min(
-    config.maxDamageThreshold,
-    Math.max(config.minDamageThreshold, damage)
-  );
+  damage = Math.min(config.maxDamageThreshold, Math.max(config.minDamageThreshold, damage));
   const prc =
     1 -
-    (config.maxDamageThreshold - damage) /
-      (config.maxDamageThreshold - config.minDamageThreshold);
-  const fontSize =
-    config.minFontSize + prc * (config.maxFontSize - config.minFontSize);
+    (config.maxDamageThreshold - damage) / (config.maxDamageThreshold - config.minDamageThreshold);
+  const fontSize = config.minFontSize + prc * (config.maxFontSize - config.minFontSize);
 
   const px = (window.innerHeight * fontSize * (isHeadshot ? 1.2 : 1)) / 100;
 
@@ -46,9 +40,7 @@ function drawStroked(ctx, damage, x, y, isHeadshot, timeLeft) {
   ctx.strokeText(damage, x, y);
 
   // draw text
-  ctx.fillStyle = isHeadshot
-    ? `rgba(240, 255, 0, ${alpha})`
-    : `rgba(255, 255, 255, ${alpha})`;
+  ctx.fillStyle = isHeadshot ? `rgba(240, 255, 0, ${alpha})` : `rgba(255, 255, 255, ${alpha})`;
   ctx.fillText(damage, x, y);
 }
 
@@ -68,30 +60,22 @@ class HitEffect {
   }
 
   randomEndMs() {
-    const randomMs =
-      Math.floor(Math.random() * config.randMs) * (this.isHeadshot ? 1.4 : 1);
+    const randomMs = Math.floor(Math.random() * config.randMs) * (this.isHeadshot ? 1.4 : 1);
     return this.startMs + config.baseMs + randomMs;
   }
 
   getCoordinates() {
     const prc = (Date.now() - this.startMs) / (this.endMs - this.startMs);
-    const mult = 1 + easeExpOut(prc) * config.maxMult;
-    return this.slopeVector.map(
-      (n, i) => i * config.canvasSize + (1 + i * -2) * (n * mult)
-    );
+    const mult = easeExpOut(prc) * config.maxMult;
+    const startX = window.innerWidth / 2;
+    const startY = window.innerHeight / 2;
+    return [startX + this.slopeVector[0] * mult, startY - this.slopeVector[1] * mult];
   }
 
   draw(ctx) {
     const [x, y] = this.getCoordinates();
 
-    drawStroked(
-      ctx,
-      this.damage,
-      x,
-      y - 100,
-      this.isHeadshot,
-      this.endMs - Date.now()
-    );
+    drawStroked(ctx, this.damage, x, y, this.isHeadshot, this.endMs - Date.now());
   }
 }
 
