@@ -9,6 +9,7 @@ function resizeCanvas(canvas) {
   canvas.height = window.innerHeight;
   canvas.style.width = canvas.width + "px";
   canvas.style.height = canvas.height + "px";
+  config.canvasScale = window.innerHeight / config.referenceHeight;
 }
 
 function main() {

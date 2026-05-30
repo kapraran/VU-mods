@@ -1,6 +1,7 @@
 export default {
   fps: 60,
   canvasSize: 0,
+  referenceHeight: 1080,
   maxMult: 120,
   baseMs: 800,
   randMs: 300,

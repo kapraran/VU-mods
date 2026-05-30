@@ -36,7 +36,7 @@ function drawStroked(ctx, damage, x, y, isHeadshot, timeLeft) {
 
   // draw stroke
   ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
-  ctx.lineWidth = isHeadshot ? 5 : 3;
+  ctx.lineWidth = (isHeadshot ? 5 : 3) * (config.canvasScale || 1);
   ctx.strokeText(damage, x, y);
 
   // draw text
@@ -66,7 +66,7 @@ class HitEffect {
 
   getCoordinates() {
     const prc = (Date.now() - this.startMs) / (this.endMs - this.startMs);
-    const mult = easeExpOut(prc) * config.maxMult;
+    const mult = easeExpOut(prc) * config.maxMult * (config.canvasScale || 1);
     const startX = window.innerWidth / 2;
     const startY = window.innerHeight / 2;
     return [startX + this.slopeVector[0] * mult, startY - this.slopeVector[1] * mult];
